@@ -82,6 +82,34 @@ def bishopMoves(board,piece,x,y):
   possibilities = []
   player = pieceOwner(piece)
 
+  # Check North-East
+  for (xi,yi) in zip(range(x + 1, boardWidth(board)),range(y - 1, -1, -1)):
+    curPiece = getPiece(board,xi,yi)
+    if not traversable(player,curPiece): break
+    owner = pieceOwner(curPiece)
+    possibilities.append( (xi,yi) )
+    if owner != player and owner: break
+  # Check South-East
+  for (xi,yi) in zip(range(x + 1, boardWidth(board)),range(y + 1, boardHeight(board) ) ):
+    curPiece = getPiece(board,xi,yi)
+    if not traversable(player,curPiece): break
+    owner = pieceOwner(curPiece)
+    possibilities.append( (xi,yi) )
+    if owner != player and owner: break
+  # Check South-West
+  for (xi,yi) in zip(range(x - 1, -1, -1),range(y + 1, boardHeight(board) ) ):
+    curPiece = getPiece(board,xi,yi)
+    if not traversable(player,curPiece): break
+    owner = pieceOwner(curPiece)
+    possibilities.append( (xi,yi) )
+    if owner != player and owner: break
+  # Check North-West
+  for (xi,yi) in zip(range(x - 1, -1, -1),range(y - 1, -1, -1)):
+    curPiece = getPiece(board,xi,yi)
+    if not traversable(player,curPiece): break
+    owner = pieceOwner(curPiece)
+    possibilities.append( (xi,yi) )
+    if owner != player and owner: break
   return possibilities
 
 def kingMoves(board,piece,x,y):
@@ -91,10 +119,7 @@ def kingMoves(board,piece,x,y):
   return possibilities
 
 def queenMoves(board,piece,x,y):
-  possibilities = []
-  player = pieceOwner(piece)
-
-  return possibilities
+  return rookMoves(board,piece,x,y) + bishopMoves(board,piece,x,y)
 
 def possibleMoves(board,piece,x,y):
   if   pieces.isPawn(piece):   return pawnMoves(board,piece,x,y)
