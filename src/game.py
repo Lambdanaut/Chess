@@ -6,6 +6,8 @@ import textDisplay as display
 from mechanics import *
 from portability import *
 
+gameHistory = []
+
 def letterToNumber(letter):
   return ord (letter.lower()) - 96
 
@@ -63,12 +65,13 @@ def playerTurn(board,player):
     printMe(display.showBoard(newBoard))
     printMe("Check-mate! Player " + player + " wins!")
     exit()
-  print board,newBoard
   return newBoard
 
 def gameLoop(board):
+  gameHistory.append(board)
   printMe (display.showBoard(board,player=pieces.w))
   boardAfterWhite = playerTurn(board,pieces.w)
+  gameHistory.append(boardAfterWhite)
   printMe (display.showBoard(boardAfterWhite,player=pieces.b))
   boardAfterBlack = playerTurn(boardAfterWhite,pieces.b)
   gameLoop(boardAfterBlack)
