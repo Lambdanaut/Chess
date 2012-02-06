@@ -9,7 +9,7 @@ def showPiece(piece):
 def showBoard(board,withCoords=True,player=None):
   boardRep = ""
   if player:
-    boardRep += ("" + player + "'s Turn: \n")
+    boardRep += ("" + player + "'s Turn\n")
   if withCoords:
     rowCoord = 1
     boardRep += "    "

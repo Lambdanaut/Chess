@@ -42,3 +42,21 @@ def pieceOwner(piece):
 def traversable(player,piece):
   if pieceOwner(piece) != player or piece == pieces.blank: return True
   else: return False
+
+# Returns a [(piece,x,y)]
+def allPieces(board,player = None,pieceType = None):
+  playerPieces = []
+  y = 0
+  dynamicPieceType = pieceType
+  for row in board:
+    x = 0
+    for piece in row:
+      if not pieceType:
+        dynamicPieceType = piece
+      if player:
+        if pieceOwner(piece) == player and pieces.pieceEqual(piece,dynamicPieceType) : playerPieces.append( (piece,x,y) )
+      else:
+        if piece != pieces.blank and pieces.pieceEqual(piece,dynamicPieceType): playerPieces.append( (piece,x,y) )
+      x += 1
+    y += 1
+  return playerPieces

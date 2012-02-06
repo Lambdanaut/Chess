@@ -55,6 +55,20 @@ def isBishop(piece): return piece == bi or piece == BI
 def isKing(piece)  : return piece == ki or piece == KI
 def isQueen(piece) : return piece == qu or piece == QU
 
+def pieceEqual(piece1,piece2):
+  if   isPawn(piece1) and isPawn(piece2):     return True
+  elif isRook(piece1) and isRook(piece2):     return True
+  elif isKnight(piece1) and isKnight(piece2): return True
+  elif isBishop(piece1) and isBishop(piece2): return True
+  elif isKing(piece1) and isKing(piece2):     return True
+  elif isQueen(piece1) and isQueen(piece2):   return True
+  else:                                       return False
+
+def notPlayer(player):
+  if   player == w: return b
+  elif player == b: return w
+  else: return False
+
 # The longest piece out of all of the pieces
 def maxPieceLength():
   longest = 0

@@ -9,7 +9,7 @@ openingBoard = [
 [xx,xx,xx,xx,xx,xx,xx,xx],
 [xx,xx,xx,xx,xx,xx,xx,xx],
 [PA,PA,PA,PA,PA,PA,PA,PA],
-[RO,KN,BI,KI,QU,BI,KN,RO]
+[RO,KN,BI,QU,KI,BI,KN,RO]
 ]
 
 blankBoard = [ [xx for x in range(0,8)] for y in range(0,8) ]

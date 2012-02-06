@@ -1,4 +1,4 @@
-#__Chess AI_ - A Platform for Testing Chess AI_
+#__Clever Chess_ - A Platform for Testing Chess AI_
 
 Quick Start
 -----------
@@ -7,7 +7,7 @@ Quick Start
 
 LISENCE
 -------
-Chess AI
+Clever Chess
 Copyright (C) 2012  Joshua Thomas
 
 This program is free software: you can redistribute it and/or modify

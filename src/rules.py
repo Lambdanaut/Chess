@@ -1,6 +1,30 @@
 import pieces
 from mechanics import *
 
+def inCheck(board,player,mate=False):
+  enemyPieces = allPieces(board,pieces.notPlayer(player) )
+  try: king = allPieces(board,player,pieces.ki)[0]
+  except IndexError: 
+    print ("FATAL ERROR: Player " + player + " doesn't have any kings, so it is not possible to get him in checkmate. ")
+    exit()
+  (king,kingX,kingY) = king
+  if mate:
+    kingMoves = possibleMoves(board,pieces.ki,kingX,kingY)
+    kingMoves.append( (kingX,kingY) )
+    cantMove = 0
+    for (kingXi,kingYi) in kingMoves:
+      for (piece,x,y) in enemyPieces:
+        if isIn( (kingXi,kingYi), possibleMoves(board,piece,x,y) ):
+          cantMove += 1
+    if cantMove == len(kingMoves):
+      return True
+    else: return False
+  else:
+    for (piece,x,y) in enemyPieces:
+      if isIn( (kingX,kingY), possibleMoves(board,piece,x,y) ):
+        return True
+    return False
+
 def pawnMoves(board,piece,x,y):
   possibilities = []
   player = pieceOwner(piece)
@@ -76,14 +100,14 @@ def knightMoves(board,piece,x,y):
   possibilities = []
   player = pieceOwner(piece)
 
-  if traversable(player,getPiece(board,x+1,y-2)): possibilities.append( (x+1,y-2) ) # 12:30
-  if traversable(player,getPiece(board,x+2,y-1)): possibilities.append( (x+2,y-1) ) # 2:30
-  if traversable(player,getPiece(board,x+2,y+1)): possibilities.append( (x+2,y+1) ) # 3:30
-  if traversable(player,getPiece(board,x+1,y+2)): possibilities.append( (x+1,y+2) ) # 5:30
-  if traversable(player,getPiece(board,x-1,y+2)): possibilities.append( (x-1,y+2) ) # 6:30
-  if traversable(player,getPiece(board,x-2,y+1)): possibilities.append( (x-2,y+1) ) # 8:30
-  if traversable(player,getPiece(board,x-2,y-1)): possibilities.append( (x-2,y-1) ) # 9:30
-  if traversable(player,getPiece(board,x-1,y-2)): possibilities.append( (x-1,y-2) ) # 11:30
+  if traversable(player,getPiece(board,x+1,y-2)) and coordInBounds(board,x+1,y-2): possibilities.append( (x+1,y-2) ) # 12:30
+  if traversable(player,getPiece(board,x+2,y-1)) and coordInBounds(board,x+2,y-1): possibilities.append( (x+2,y-1) ) # 2:30
+  if traversable(player,getPiece(board,x+2,y+1)) and coordInBounds(board,x+2,y+1): possibilities.append( (x+2,y+1) ) # 3:30
+  if traversable(player,getPiece(board,x+1,y+2)) and coordInBounds(board,x+1,y+2): possibilities.append( (x+1,y+2) ) # 5:30
+  if traversable(player,getPiece(board,x-1,y+2)) and coordInBounds(board,x-1,y+2): possibilities.append( (x-1,y+2) ) # 6:30
+  if traversable(player,getPiece(board,x-2,y+1)) and coordInBounds(board,x-2,y+1): possibilities.append( (x-2,y+1) ) # 8:30
+  if traversable(player,getPiece(board,x-2,y-1)) and coordInBounds(board,x-2,y-1): possibilities.append( (x-2,y-1) ) # 9:30
+  if traversable(player,getPiece(board,x-1,y-2)) and coordInBounds(board,x-1,y-2): possibilities.append( (x-1,y-2) ) # 11:30
 
   return possibilities
 
@@ -125,14 +149,14 @@ def kingMoves(board,piece,x,y):
   possibilities = []
   player = pieceOwner(piece)
 
-  if traversable(player,getPiece(board,x,y-1)): possibilities.append( (x,y-1) )     # North
-  if traversable(player,getPiece(board,x+1,y-1)): possibilities.append( (x+1,y-1) ) # NorthEast
-  if traversable(player,getPiece(board,x+1,y)): possibilities.append( (x+1,y) )     # East
-  if traversable(player,getPiece(board,x+1,y+1)): possibilities.append( (x+1,y+1) ) # SouthEast
-  if traversable(player,getPiece(board,x,y+1)): possibilities.append( (x,y+1) )     # South
-  if traversable(player,getPiece(board,x-1,y+1)): possibilities.append( (x-1,y+1) ) # SouthWest
-  if traversable(player,getPiece(board,x-1,y)): possibilities.append( (x-1,y) )     # West
-  if traversable(player,getPiece(board,x-1,y-1)): possibilities.append( (x-1,y-1) ) # NorthWest
+  if traversable(player,getPiece(board,x,y-1)) and coordInBounds(board,x,y-1): possibilities.append( (x,y-1) )       # North
+  if traversable(player,getPiece(board,x+1,y-1)) and coordInBounds(board,x+1,y-1): possibilities.append( (x+1,y-1) ) # NorthEast
+  if traversable(player,getPiece(board,x+1,y)) and coordInBounds(board,x+1,y): possibilities.append( (x+1,y) )       # East
+  if traversable(player,getPiece(board,x+1,y+1)) and coordInBounds(board,x+1,y+1): possibilities.append( (x+1,y+1) ) # SouthEast
+  if traversable(player,getPiece(board,x,y+1)) and coordInBounds(board,x,y+1): possibilities.append( (x,y+1) )       # South
+  if traversable(player,getPiece(board,x-1,y+1)) and coordInBounds(board,x-1,y+1): possibilities.append( (x-1,y+1) ) # SouthWest
+  if traversable(player,getPiece(board,x-1,y)) and coordInBounds(board,x-1,y): possibilities.append( (x-1,y) )       # West
+  if traversable(player,getPiece(board,x-1,y-1)) and coordInBounds(board,x-1,y-1): possibilities.append( (x-1,y-1) ) # NorthWest
 
   return possibilities
 
