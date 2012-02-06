@@ -20,7 +20,7 @@ def interpretCoord(board,coord):
   else: return False
 
 def interpretCommand(board,command):
-  splitCommand = command.split(" ")
+  splitCommand = command.split()
   if len(splitCommand) == 2:
     curLocation = splitCommand[0]
     destination = splitCommand[1]
