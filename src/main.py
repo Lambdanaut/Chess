@@ -1,10 +1,7 @@
 # /usr/bin/python
-#CHESS
 
 import game
 
-debug = True
- 
 def main():
   game.startGame()
 

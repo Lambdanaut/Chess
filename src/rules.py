@@ -72,6 +72,35 @@ def rookMoves(board,piece,x,y):
     if owner != player and owner: break
   return possibilities
 
+def knightMoves(board,piece,x,y):
+  possibilities = []
+  player = pieceOwner(piece)
+
+  return possibilities
+
+def bishopMoves(board,piece,x,y):
+  possibilities = []
+  player = pieceOwner(piece)
+
+  return possibilities
+
+def kingMoves(board,piece,x,y):
+  possibilities = []
+  player = pieceOwner(piece)
+
+  return possibilities
+
+def queenMoves(board,piece,x,y):
+  possibilities = []
+  player = pieceOwner(piece)
+
+  return possibilities
+
 def possibleMoves(board,piece,x,y):
-  if   pieces.isPawn(piece): return pawnMoves(board,piece,x,y)
-  elif pieces.isRook(piece): return rookMoves(board,piece,x,y)
+  if   pieces.isPawn(piece):   return pawnMoves(board,piece,x,y)
+  elif pieces.isRook(piece):   return rookMoves(board,piece,x,y)
+  elif pieces.isKnight(piece): return knightMoves(board,piece,x,y)
+  elif pieces.isBishop(piece): return bishopMoves(board,piece,x,y)
+  elif pieces.isKing(piece):   return kingMoves(board,piece,x,y)
+  elif pieces.isQueen(piece):  return queenMoves(board,piece,x,y)
+  else:                        return []
