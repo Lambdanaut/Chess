@@ -1,6 +1,8 @@
 import portability
 
-# W's Pieces
+# White's ingame name
+w  = "White"
+# White's Pieces
 pa = "pa"
 ro = "ro"
 kn = "kn"
@@ -8,7 +10,9 @@ bi = "bi"
 ki = "ki"
 qu = "qu"
 
-# B's Pieces
+# Black's ingame name
+b  = "Black"
+# Black's Pieces
 PA = "PA"
 RO = "RO"
 KN = "KN"
@@ -16,13 +20,11 @@ BI = "BI"
 KI = "KI"
 QU = "QU"
 
-# If set to True, pieces will appear as chess pieces in Unicode, but Python3 will be required.
-unicodePieces = True
-
-
-
 # Empty Space on the Board
 blank = "--"
+
+# If set to True, pieces will appear as chess pieces in Unicode, but Python3 will be required.
+unicodePieces = True
 
 if portability.pyVersion() == 3 and unicodePieces:
   import unicodePieces as up
