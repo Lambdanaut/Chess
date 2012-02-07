@@ -1,3 +1,5 @@
+import copy
+
 import boards
 import pieces
 import rules
@@ -59,7 +61,12 @@ def playerTurn(board,player):
     printMe ("Error: That piece can not be moved there. Try again. ")
     return playerTurn(board,player)
   # Move the piece
+  oldBoard = copy.deepcopy(board)
   newBoard = movePiece(board,piece,coordX1,coordY1,coordX2,coordY2)
+  # Make sure the user didn't move into check
+  if rules.inCheck(board,player):
+    printMe ("Error: You can't move there because you're in check. ")
+    return playerTurn(oldBoard,player)
   # Check for victory conditions
   if rules.inCheck(board,pieces.notPlayer(player),mate=True):
     printMe(display.showBoard(newBoard))
@@ -68,13 +75,13 @@ def playerTurn(board,player):
   return newBoard
 
 def gameLoop(board):
-  gameHistory.append(board)
+  gameHistory.append(copy.deepcopy(board))
   printMe (display.showBoard(board,player=pieces.w))
   boardAfterWhite = playerTurn(board,pieces.w)
-  gameHistory.append(boardAfterWhite)
+  gameHistory.append(copy.deepcopy(boardAfterWhite))
   printMe (display.showBoard(boardAfterWhite,player=pieces.b))
   boardAfterBlack = playerTurn(boardAfterWhite,pieces.b)
   gameLoop(boardAfterBlack)
 
 def startGame():
-  gameLoop(boards.openingBoard)
+  gameLoop(boards.testBoard1)

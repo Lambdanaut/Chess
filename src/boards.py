@@ -15,12 +15,12 @@ openingBoard = [
 blankBoard = [ [xx for x in range(0,8)] for y in range(0,8) ]
 
 testBoard1 = [
-[ro,xx,xx,xx,xx,xx,xx,ro],
-[xx,pa,pa,pa,pa,pa,pa,pa],
+[ki,xx,xx,xx,xx,xx,xx,pa],
+[xx,xx,xx,xx,xx,xx,xx,xx],
+[bi,xx,xx,xx,xx,xx,xx,xx],
 [xx,xx,xx,xx,xx,xx,xx,xx],
 [xx,xx,xx,xx,xx,xx,xx,xx],
 [xx,xx,xx,xx,xx,xx,xx,xx],
 [xx,xx,xx,xx,xx,xx,xx,xx],
-[PA,PA,PA,PA,PA,PA,PA,xx],
-[RO,KN,BI,KI,QU,BI,KN,RO]
+[PA,xx,xx,xx,xx,xx,xx,KI]
 ]
