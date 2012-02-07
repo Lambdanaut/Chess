@@ -42,8 +42,6 @@ def playerTurn(board,player):
   # See if the player is in Check
   if rules.inCheck(board,player):
     printMe ("You're in check! Your only valid move is to get out of check. ")
-    inCheck = True
-  else: inCheck = False
   # Read and interpret player's command
   interpretedCommand = False
   while not interpretedCommand:
@@ -84,4 +82,4 @@ def gameLoop(board):
   gameLoop(boardAfterBlack)
 
 def startGame():
-  gameLoop(boards.testBoard1)
+  gameLoop(boards.openingBoard)

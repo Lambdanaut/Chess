@@ -5,6 +5,8 @@
 #    \___)(____)(____)  \/  (____)(_)\_)   \___)(_) (_)(____)(___/(___/
 #                         A Lambdanaut Experiment
 
+# For python2, requires a version >= 2.6
+
 import game
 
 def main():
