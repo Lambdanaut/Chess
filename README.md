@@ -1,4 +1,7 @@
-#__Clever Chess_ - A Platform for Testing Chess AI_
+_Clever Chess_ - A Platform for Testing Chess AI
+===============================================
+
+Clever Chess is a chess program that is played against a bot. The bot begins with no knowledge of the game or how to play it, making pretty much random moves, but after enough games, the bot will learn how to play better. The bot learns primarily from it's losses, mimicking superior opponents. It keeps a record of all board positions it has seen in the past and the move the players used from those positions to trump the bot. 
 
 Quick Start
 -----------

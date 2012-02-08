@@ -1,4 +1,5 @@
 import portability
+from mechanics import isIn
 
 # White's ingame name
 w  = "White"
@@ -63,6 +64,29 @@ def pieceEqual(piece1,piece2):
   elif isKing(piece1) and isKing(piece2):     return True
   elif isQueen(piece1) and isQueen(piece2):   return True
   else:                                       return False
+
+def pieceOwner(piece):
+  if   isIn(piece,wPieces): return w
+  elif isIn(piece,bPieces): return b
+  else:                                 return False
+
+def changeOwner(piece):
+  owner = pieceOwner(piece)
+  if owner == w:
+    if   isPawn(piece):   return PA
+    elif isRook(piece):   return RO
+    elif isKnight(piece): return KN
+    elif isBishop(piece): return BI
+    elif isKing(piece):   return KI
+    elif isQueen(piece):  return QU
+  elif owner == b:
+    if   isPawn(piece):   return pa
+    elif isRook(piece):   return ro
+    elif isKnight(piece): return kn
+    elif isBishop(piece): return bi
+    elif isKing(piece):   return ki
+    elif isQueen(piece):  return qu
+  else: blank
 
 def notPlayer(player):
   if   player == w: return b

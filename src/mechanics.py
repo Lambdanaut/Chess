@@ -1,5 +1,7 @@
 import pieces
 
+import copy
+
 def boardWidth(board):
   return len(board[0])
 
@@ -22,7 +24,7 @@ def getPiece(board,x,y):
 
 def setPiece(board,x,y,piece):
   if coordInBounds(board,x,y):
-    newBoard = board
+    newBoard = copy.deepcopy(board)
     newBoard[y][x] = piece
     return newBoard
   else: return False

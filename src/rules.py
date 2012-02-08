@@ -1,27 +1,45 @@
+import copy
+
 import pieces
 from mechanics import *
 
 def inCheck(board,player,mate=False):
-  enemyPieces = allPieces(board,pieces.notPlayer(player) )
   try: king = allPieces(board,player,pieces.ki)[0]
   except IndexError: 
     print ("FATAL ERROR: Player " + player + " doesn't have any kings, so it is not possible to get him in checkmate. ")
     exit()
   (king,kingX,kingY) = king
+  enemyPieces = allPieces(board,pieces.notPlayer(player) )
   if mate:
-    kingMoves = possibleMoves(board,pieces.ki,kingX,kingY)
+    playerPieces = allPieces(board,player)
+    checkBoard = copy.deepcopy(board)
+    kingMoves = possibleMoves(board,kingX,kingY)
     kingMoves.append( (kingX,kingY) )
-    cantMove = 0
-    for (kingXi,kingYi) in kingMoves:
-      for (piece,x,y) in enemyPieces:
-        if isIn( (kingXi,kingYi), possibleMoves(board,piece,x,y) ):
-          cantMove += 1
-    if cantMove == len(kingMoves):
-      return True
-    else: return False
+    cantMove = len(kingMoves)
+    for (piece,xi,yi) in playerPieces:
+      if not pieces.isKing(piece):
+        for (x,y) in possibleMoves(board,xi,yi):
+          checkBoard = setPiece(checkBoard,x,y,piece)
+    y = 0
+    for row in checkBoard:
+      x = 0
+      for piece in row:
+        print checkBoard
+        if pieces.pieceOwner(piece) == pieces.notPlayer(player):
+          checkBoard = setPiece(checkBoard,x,y,pieces.changeOwner(piece))
+        x += 1
+      y += 1
+    for (piece,x,y) in enemyPieces:
+      moves = possibleMoves(checkBoard,x,y)
+      for kingCoords in kingMoves:
+        if isIn( kingCoords, moves):
+          cantMove -= 1
+    if   cantMove == 0: return True  # Checkmate
+    elif cantMove == 1: return None  # Stalemate
+    else              : return False # No Checkmate
   else:
     for (piece,x,y) in enemyPieces:
-      if isIn( (kingX,kingY), possibleMoves(board,piece,x,y) ):
+      if isIn( (kingX,kingY), possibleMoves(board,x,y) ):
         return True
     return False
 
@@ -163,7 +181,8 @@ def kingMoves(board,piece,x,y):
 def queenMoves(board,piece,x,y):
   return rookMoves(board,piece,x,y) + bishopMoves(board,piece,x,y)
 
-def possibleMoves(board,piece,x,y):
+def possibleMoves(board,x,y):
+  piece = getPiece(board,x,y)
   if   pieces.isPawn(piece):   return pawnMoves(board,piece,x,y)
   elif pieces.isRook(piece):   return rookMoves(board,piece,x,y)
   elif pieces.isKnight(piece): return knightMoves(board,piece,x,y)
