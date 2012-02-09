@@ -21,6 +21,9 @@ BI = "BI"
 KI = "KI"
 QU = "QU"
 
+# AI's default player
+ai = b
+
 # Empty Space on the Board
 blank = "--"
 

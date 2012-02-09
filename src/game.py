@@ -1,6 +1,7 @@
 import copy
 
 import boards
+import bot
 import pieces
 import rules
 import textDisplay as display
@@ -10,7 +11,13 @@ from portability import *
 
 class Game:
   def __init__(self,aiOpponent,firstPlayer=pieces.w):
-    self.aiOpponent = aiOpponent
+    if aiOpponent:
+      self.ai       = bot.Bot(pieces.ai)
+      self.aiPlayer = pieces.ai
+    else: 
+      self.ai = aiOpponent
+      self.aiPlayer = aiOpponent
+      
     self.player = firstPlayer
     
     self.board = boards.openingBoard
@@ -23,12 +30,7 @@ class Game:
     if rules.inCheck(self.board,self.player):
       printMe ("You're in check! Your only valid move is to get out of check. ")
     # Read and interpret player's command
-    interpretedCommand = False
-    while not interpretedCommand:
-      playerCommand = getInput(self.player + "'s Move: ")
-      interpretedCommand = self.interpretCommand(self.board,playerCommand)
-      if not interpretedCommand: printMe ("Error: Your command couldn't be read. Try again. ")
-    (piece, coordX1, coordY1, coordX2, coordY2) = interpretedCommand
+    (piece, coordX1, coordY1, coordX2, coordY2) = self.readInput()
     # Make sure the command isn't invalid
     if pieceOwner(piece) != self.player:
       if not pieceOwner(piece): printMe ("Error: There is no piece in that position. Try again.")
@@ -51,21 +53,37 @@ class Game:
     if checkmate:
       printMe(display.showBoard(self.board))
       printMe("Check-mate! Player " + self.player + " wins!")
+      if self.aiPlayer == pieces.notPlayer(self.player):
+        self.ai.learn(self.gameHistory)
       exit()
     elif checkmate == None:
       printMe(display.showBoard(self.board))
       printMe("Stale-mate! Player " + self.player + "'s King is safe where it is, but can't move anywhere without being in check. The game is a draw! ")
       exit()
+    return (coordX1, coordY1, coordX2, coordY2)
 
   def playerSeq(self):
-    self.gameHistory.append(copy.deepcopy(self.board) )
     printMe (display.showBoard(self.board,player=self.player) )
-    self.playerTurn()
+    (x1,y1,x2,y2) = self.playerTurn()
+    self.gameHistory.append( (copy.deepcopy(self.board),self.player,x1,y1,x2,y2) )
     return pieces.notPlayer(self.player)
 
   def gameLoop(self):
-    self.player = self.playerSeq()
-    self.gameLoop()
+    while True:
+      self.player = self.playerSeq()
+
+  def readInput(self):
+    # Ask bot for input
+    if self.aiPlayer == self.player:
+      return self.ai.doTurn(copy.deepcopy(self.board))
+    # Ask player for input
+    else:
+      interpretedCommand = False
+      while not interpretedCommand:
+        playerCommand = getInput(self.player + "'s Move: ")
+        interpretedCommand = self.interpretCommand(self.board,playerCommand)
+        if not interpretedCommand: printMe ("Error: Your command couldn't be read. Try again. ")
+      return interpretedCommand
 
   def letterToNumber(self,letter):
     return ord (letter.lower()) - 96
