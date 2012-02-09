@@ -9,35 +9,19 @@ def inCheck(board,player,mate=False):
     print ("FATAL ERROR: Player " + player + " doesn't have any kings, so it is not possible to get him in checkmate. ")
     exit()
   (king,kingX,kingY) = king
-  enemyPieces = allPieces(board,pieces.notPlayer(player) )
   if mate:
     playerPieces = allPieces(board,player)
-    checkBoard = copy.deepcopy(board)
-    kingMoves = possibleMoves(board,kingX,kingY)
-    kingMoves.append( (kingX,kingY) )
-    cantMove = len(kingMoves)
-    for (piece,xi,yi) in playerPieces:
-      if not pieces.isKing(piece):
-        for (x,y) in possibleMoves(board,xi,yi):
-          checkBoard = setPiece(checkBoard,x,y,piece)
-    y = 0
-    for row in checkBoard:
-      x = 0
-      for piece in row:
-        print checkBoard
-        if pieces.pieceOwner(piece) == pieces.notPlayer(player):
-          checkBoard = setPiece(checkBoard,x,y,pieces.changeOwner(piece))
-        x += 1
-      y += 1
-    for (piece,x,y) in enemyPieces:
-      moves = possibleMoves(checkBoard,x,y)
-      for kingCoords in kingMoves:
-        if isIn( kingCoords, moves):
-          cantMove -= 1
-    if   cantMove == 0: return True  # Checkmate
-    elif cantMove == 1: return None  # Stalemate
-    else              : return False # No Checkmate
+    # Build up a list of board positions that a player could move into
+    boards = []
+    for (piece,x1,y1) in playerPieces:
+      for (x2,y2) in possibleMoves(board,x1,y1):
+        boards.append(movePiece(copy.deepcopy(board),piece,x1,y1,x2,y2) )
+    boardsInCheck = []
+    for b in boards:
+      if not inCheck(b,player): return False 
+    return True
   else:
+    enemyPieces = allPieces(board,pieces.notPlayer(player) )
     for (piece,x,y) in enemyPieces:
       if isIn( (kingX,kingY), possibleMoves(board,x,y) ):
         return True

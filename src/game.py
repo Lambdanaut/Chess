@@ -13,7 +13,7 @@ class Game:
     self.aiOpponent = aiOpponent
     self.player = firstPlayer
     
-    self.board = boards.testBoard1
+    self.board = boards.openingBoard
     self.gameHistory = []
 
     self.gameLoop()
