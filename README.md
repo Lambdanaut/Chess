@@ -12,7 +12,7 @@ Quick Start
 4. `a2 a4`
 5. `b7 b5`
 
-LISENCE
+LICENSE
 -------
 Clever Chess
 Copyright (C) 2012  Joshua Thomas
