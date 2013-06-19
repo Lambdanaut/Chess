@@ -6,11 +6,9 @@ from mechanics import *
 
 class Bot:
   def __init__ (self,player):
-    self.db = Database("127.0.0.1", 27017)
     self.player = player
 
   def doTurn(self,board):
-    foundMove = self.db.db.moves.find_one({"board" : board})
     # If we've seen this play before, copy what we've seen. 
     if foundMove: 
       return (getPiece(board,foundMove["x1"],foundMove["y1"]),foundMove["x1"],foundMove["y1"],foundMove["x2"],foundMove["y2"])

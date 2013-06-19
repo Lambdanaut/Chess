@@ -104,4 +104,3 @@ def maxPieceLength():
     if pieceLength > longest: longest = pieceLength
   return longest
 maximumPieceRepresentationLength = maxPieceLength()
-
