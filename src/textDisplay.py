@@ -24,4 +24,3 @@ def showBoard(board,withCoords=True,player=None):
       boardRep += showPiece(piece) + " "
     boardRep += "\n"
   return boardRep
-
