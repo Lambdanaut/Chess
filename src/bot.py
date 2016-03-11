@@ -4,35 +4,24 @@ import pieces
 import rules
 from mechanics import *
 
-class Bot:
-  def __init__ (self,player):
-    self.player = player
-    self.learning_iterations = 10
+class Bot(object):
+    def __init__ (self,player):
+        self.player = player
 
-  def doTurn(self,board):
-    for iteration in range(0,self.learning_iterations)
-      curBoard = board
-      curPlayer = 
-      myPieces = allPieces(curBoard,player = self.player)
-      random.shuffle(myPieces)
-      openingMove = None
-      for piece in myPieces:
-        (p,x,y) = piece
-        possibleMoves = rules.possibleMoves(board,x,y)
-        if possibleMoves:
-          randomMoveIndex = random.randint(0,len(possibleMoves) - 1)
-          randomMove = possibleMoves[randomMoveIndex]
-          break
-      sys.exit("Error: AI has no possible moves. ")
+    def doTurn(self, board):
+        raise NotImplementedError
 
 
-        return (getPiece(board,foundMove["x1"],foundMove["y1"]),foundMove["x1"],foundMove["y1"],foundMove["x2"],foundMove["y2"])
-
+class RandoBot(Bot):
+    """ A bot that makes random moves """
+    def doTurn(self, board):
+        myPieces = allPieces(board, player = self.player)
         while True:
-          rand = random.randint(0,len(myPieces) - 1)
-          (piece,x,y) = myPieces[rand]
-          moves = rules.possibleMoves(board,x,y)
-          if len(moves) > 0:
-            (x2,y2) = moves[0]
-            return (piece,x,y,x2,y2)
-            break
+            piece, pieceX, pieceY = random.choice(myPieces)
+            possiblePiecesMoves = rules.possibleMoves(board, pieceX, pieceY)
+            if possiblePiecesMoves:
+                moveX, moveY = random.choice(possiblePiecesMoves)
+                return (piece, pieceX, pieceY, moveX, moveY)
+
+
+BOT = RandoBot
