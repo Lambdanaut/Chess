@@ -1,4 +1,4 @@
-import sys, random, copy
+import sys, random
 
 import pieces
 import rules
@@ -11,9 +11,25 @@ class Bot(object):
     def doTurn(self, board):
         raise NotImplementedError
 
+    def pieceValue(self, piece):
+        if pieces.isPawn(piece):   return 1
+        if pieces.isKnight(piece): return 3
+        if pieces.isBishop(piece): return 3
+        if pieces.isRook(piece):   return 5
+        if pieces.isQueen(piece):  return 9
+        if pieces.isKing(piece):   return 5
+        else:                      return 0
+
+    def scoreHeuristic(self, board):
+        playerPieces = [piece for piece, x, y in allPieces(board, player = self.player)]
+        notPlayerPieces = [piece for piece, x, y in allPieces(board, player = pieces.notPlayer(self.player))]
+        playerValue = sum([self.pieceValue(piece) for piece in playerPieces])
+        notPlayerValue = sum([self.pieceValue(piece) for piece in notPlayerPieces])
+        score = playerValue - notPlayerValue
+        return score
 
 class RandoBot(Bot):
-    """ A bot that makes random moves """
+    """ A bot that makes completely random moves """
     def doTurn(self, board):
         myPieces = allPieces(board, player = self.player)
         while True:
@@ -24,4 +40,57 @@ class RandoBot(Bot):
                 return (piece, pieceX, pieceY, moveX, moveY)
 
 
-BOT = RandoBot
+class OneDepthBot(Bot):
+    """ 
+    A bot that makes moves with the highest scoreHeuristic, based on a depth search of 1
+    """
+    def doTurn(self, board):
+        movedBoardScores = []  # A list of (score, (piece, pieceX, pieceY, moveX, moveY))
+        myPieces = allPieces(board, player = self.player)
+        for piece, pieceX, pieceY in myPieces:
+            possiblePiecesMoves = rules.possibleMoves(board, pieceX, pieceY)
+            for moveX, moveY in possiblePiecesMoves:
+                movedBoard = movePiece(board, piece, pieceX, pieceY, moveX, moveY)
+                movedBoardScore = self.scoreHeuristic(movedBoard)
+                movedBoardScores.append( (movedBoardScore, (piece, pieceX, pieceY, moveX, moveY)) )
+        movedBoardScores.sort()
+        _, winningMove = movedBoardScores[-1]
+        return winningMove
+
+
+class DepthBot(Bot):
+    """ 
+    """
+
+    def doTurn(self, board):
+        movedBoardScores = []  # A list of (score, (piece, pieceX, pieceY, moveX, moveY))
+
+        myPieces = allPieces(board, player = self.player)
+        for piece, pieceX, pieceY in myPieces:
+            possiblePiecesMoves = rules.possibleMoves(board, pieceX, pieceY)
+            for moveX, moveY in possiblePiecesMoves:
+                movedBoard = movePiece(board, piece, pieceX, pieceY, moveX, moveY)
+                score = self.miniMax(movedBoard, self.player)
+                movedBoardScores.append((score,(piece, pieceX, pieceY, moveX, moveY)))
+
+        movedBoardScores.sort()
+        _, winningMove = movedBoardScores[-1]
+        return winningMove
+
+    def miniMax(self, board, currentPlayer, depth = 8):
+        if depth == 0: 
+            return 0
+
+        myPieces = allPieces(board, player = currentPlayer)
+
+        if not myPieces:
+            return 0
+
+        score = self.scoreHeuristic(board)
+        for piece, pieceX, pieceY in myPieces:
+            possiblePiecesMoves = rules.possibleMoves(board, pieceX, pieceY)
+            for moveX, moveY in possiblePiecesMoves:
+                movedBoard = movePiece(board, piece, pieceX, pieceY, moveX, moveY)
+                return score + self.miniMax(movedBoard, pieces.notPlayer(currentPlayer), depth - 1)
+
+BOT = DepthBot

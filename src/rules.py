@@ -33,10 +33,11 @@ def pawnMoves(board,piece,x,y):
 
     # If the piece is on the starting lines, allow it to move two spaces. 
     if (player == pieces.w and y == 1) or (player == pieces.b and y == boardHeight(board) - 2): depth = 2
-    else                                                                                                                                                                            : depth = 1
+    else                                                                                      : depth = 1
     # White player rules
     if player == pieces.w:
         for i in range(y + 1, y + 1 + depth):
+            if not coordInBounds(board,x,i): break
             curPiece = getPiece(board,x,i)
             if not traversable(player,curPiece): break
             owner = pieceOwner(curPiece)
@@ -51,6 +52,7 @@ def pawnMoves(board,piece,x,y):
     # Black player rules
     elif player == pieces.b:
         for i in range(y - 1, y - 1 - depth,-1):
+            if not coordInBounds(board,x,i): break
             curPiece = getPiece(board,x,i)
             if not traversable(player,curPiece): break
             owner = pieceOwner(curPiece)
@@ -174,3 +176,7 @@ def possibleMoves(board,x,y):
     elif pieces.isKing(piece):   return kingMoves(board,piece,x,y)
     elif pieces.isQueen(piece):  return queenMoves(board,piece,x,y)
     else:                        return []
+
+if __name__ == '__main__':
+    import boards
+    board = boards.openingBoard

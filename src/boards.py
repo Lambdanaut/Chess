@@ -12,6 +12,17 @@ openingBoard = [
 [RO,KN,BI,KI,QU,BI,KN,RO]
 ]
 
+# openingBoard = [
+# [xx,xx,xx,xx,xx,xx,xx,xx],
+# [PA,xx,xx,xx,xx,xx,xx,xx],
+# [xx,xx,xx,xx,xx,xx,xx,xx],
+# [xx,xx,xx,xx,xx,xx,xx,xx],
+# [xx,xx,xx,ki,xx,xx,xx,xx],
+# [xx,xx,xx,xx,xx,xx,xx,xx],
+# [pa,PA,PA,PA,PA,PA,PA,PA],
+# [xx,KN,BI,KI,QU,BI,KN,RO]
+# ]
+
 blankBoard = [ [xx for x in range(0,8)] for y in range(0,8) ]
 
 testBoard1 = [

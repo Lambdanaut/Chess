@@ -53,8 +53,6 @@ class Game:
         if checkmate:
             printMe(display.showBoard(self.board))
             printMe("Check-mate! Player " + self.player + " wins!")
-            if self.aiPlayer == pieces.notPlayer(self.player):
-                self.ai.learn(self.gameHistory)
             exit()
         elif checkmate == None:
             printMe(display.showBoard(self.board))
