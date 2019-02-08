@@ -31,7 +31,7 @@ def setPiece(board,x,y,piece):
 
 def movePiece(board,piece,coordX1,coordY1,coordX2,coordY2):
     b1 = setPiece(board,coordX1,coordY1,pieces.blank)
-    b2 = setPiece(b1,     coordX2,coordY2,piece)
+    b2 = setPiece(b1,coordX2,coordY2,piece)
     return b2
 
 def pieceOwner(piece):

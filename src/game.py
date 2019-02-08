@@ -25,21 +25,21 @@ class Game:
 
         self.gameLoop()
 
-    def playerTurn(self):
+    def playerTurn(self, fails=0):
         # See if the player is in Check
         if rules.inCheck(self.board,self.player):
             printMe ("You're in check! Your only valid move is to get out of check. ")
         # Read and interpret player's command
-        (piece, coordX1, coordY1, coordX2, coordY2) = self.readInput()
+        (piece, coordX1, coordY1, coordX2, coordY2) = self.readInput(fails=fails)
         # Make sure the command isn't invalid
         if pieceOwner(piece) != self.player:
             if not pieceOwner(piece): printMe ("Error: There is no piece in that position. Try again.")
             else: printMe ("Error: You don't own that piece! Try again. ")
-            return self.playerTurn()
+            return self.playerTurn(fails=fails+1)
         possibleMoves = rules.possibleMoves(self.board,coordX1,coordY1)
         if not isIn((coordX2,coordY2),possibleMoves):
             printMe ("Error: That piece can not be moved there. Try again. ")
-            return self.playerTurn()
+            return self.playerTurn(fails=fails+1)
         # Move the piece
         oldBoard = copy.deepcopy(self.board)
         self.board = movePiece(self.board,piece,coordX1,coordY1,coordX2,coordY2)
@@ -47,7 +47,7 @@ class Game:
         if rules.inCheck(self.board,self.player):
             printMe ("Error: You can't move there because you're in check. ")
             self.board = oldBoard
-            return self.playerTurn()
+            return self.playerTurn(fails=fails+1)
         # Check for victory conditions
         checkmate = rules.inCheck(self.board,pieces.notPlayer(self.player),mate=True)
         if checkmate:
@@ -70,17 +70,17 @@ class Game:
         while True:
             self.player = self.playerSeq()
 
-    def readInput(self):
+    def readInput(self, fails):
         # Ask bot for input
         if self.aiPlayer == self.player:
-            return self.ai.doTurn(copy.deepcopy(self.board))
+            return self.ai.doTurn(copy.deepcopy(self.board), fails)
         # Ask player for input
         else:
             interpretedCommand = False
             while not interpretedCommand:
                 playerCommand = getInput(self.player + "'s Move: ")
                 interpretedCommand = self.interpretCommand(self.board,playerCommand)
-                if not interpretedCommand: printMe ("Error: Your command couldn't be read. Try again. ")
+                if not interpretedCommand: printMe("Error: Your command couldn't be read. Try again. ")
             return interpretedCommand
 
     def letterToNumber(self,letter):
