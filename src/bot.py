@@ -75,27 +75,29 @@ class DepthBot(Bot):
                 score = self.miniMax(movedBoard, self.player)
                 movedBoardScores.append((score,(piece, pieceX, pieceY, moveX, moveY)))
 
-        movedBoardScores.sort()
-        fails_offset = -1 + fails
-        _, winningMove = movedBoardScores[fails_offset]
+        movedBoardScores.sort(reverse=True)
+        _, winningMove = movedBoardScores[fails]
         return winningMove
 
-    def miniMax(self, board, currentPlayer, depth=300):
+    def miniMax(self, board, currentPlayer, depth=2):
         if depth == 0: 
             return 0
 
-        myPieces = allPieces(board, player = currentPlayer)
+        myPieces = allPieces(board, player=currentPlayer)
 
         if not myPieces:
             return 0
 
+        results = []
         score = self.scoreHeuristic(board)
         for piece, pieceX, pieceY in myPieces:
             possiblePiecesMoves = rules.possibleMoves(board, pieceX, pieceY)
             for moveX, moveY in possiblePiecesMoves:
                 movedBoard = movePiece(board, piece, pieceX, pieceY, moveX, moveY)
-                return score + self.miniMax(movedBoard, pieces.notPlayer(currentPlayer), depth - 1)
+                result = self.miniMax(movedBoard, pieces.notPlayer(currentPlayer), depth - 1)
+                result += score
+                results.append(result)
 
-        return 0
+        return sum(results)
 
 BOT = DepthBot

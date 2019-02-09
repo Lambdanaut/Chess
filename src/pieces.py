@@ -40,7 +40,7 @@ if portability.pyVersion() == 3 and unicodePieces:
     qu = up.qu
     PA = up.PA
     RO = up.RO
-    KN = up.KI
+    KN = up.KN
     BI = up.BI
     KI = up.KI
     QU = up.QU
