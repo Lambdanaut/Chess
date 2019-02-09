@@ -9,6 +9,7 @@ import textDisplay as display
 from mechanics import *
 from portability import *
 
+
 class Game:
     def __init__(self, aiOpponents=0, firstPlayer=pieces.w):
         # Dict from ai player => bot
@@ -22,8 +23,8 @@ class Game:
             ai1 = pieces.ai
             ai2 = pieces.notPlayer(pieces.ai)
 
-            self.ai[ai1] = bot.BOT(ai1)
-            self.ai[ai2] = bot.BOT(ai2)
+            self.ai[ai1] = bot.DepthBot(ai1)
+            self.ai[ai2] = bot.DepthBot(ai2)
 
             self.player = ai1
 

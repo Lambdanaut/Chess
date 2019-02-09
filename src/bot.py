@@ -1,8 +1,9 @@
-import sys, random
+import random
 
 import pieces
 import rules
 from mechanics import *
+
 
 class Bot(object):
     def __init__ (self, player):
@@ -61,7 +62,8 @@ class OneDepthBot(Bot):
 
 
 class DepthBot(Bot):
-    """ 
+    """
+    Minimax bot
     """
 
     def doTurn(self, board, fails=0):
@@ -76,7 +78,8 @@ class DepthBot(Bot):
                 movedBoardScores.append((score,(piece, pieceX, pieceY, moveX, moveY)))
 
         movedBoardScores.sort(reverse=True)
-        _, winningMove = movedBoardScores[fails]
+        index = fails or min(len(movedBoardScores) - 1, max(1, round(random.expovariate(0.5))))
+        _, winningMove = movedBoardScores[index]
         return winningMove
 
     def miniMax(self, board, currentPlayer, depth=2):
@@ -100,4 +103,3 @@ class DepthBot(Bot):
 
         return sum(results)
 
-BOT = DepthBot
