@@ -10,16 +10,27 @@ from mechanics import *
 from portability import *
 
 class Game:
-    def __init__(self, aiOpponent, firstPlayer=pieces.w):
-        if aiOpponent:
-            self.ai       = bot.BOT(pieces.ai)
-            self.aiPlayer = pieces.ai
-        else: 
-            self.ai       = aiOpponent
-            self.aiPlayer = aiOpponent
-            
-        self.player = firstPlayer
-        
+    def __init__(self, aiOpponents=0, firstPlayer=pieces.w):
+        # Dict from ai player => bot
+        self.ai = {}
+
+        if aiOpponents == 1:
+            self.ai[pieces.ai] = bot.BOT(pieces.ai)
+            self.player = firstPlayer
+
+        elif aiOpponents == 2:
+            ai1 = pieces.ai
+            ai2 = pieces.notPlayer(pieces.ai)
+
+            self.ai[ai1] = bot.BOT(ai1)
+            self.ai[ai2] = bot.BOT(ai2)
+
+            self.player = ai1
+
+        else:
+            self.ai = None
+            self.player = firstPlayer
+
         self.board = boards.openingBoard
         self.gameHistory = []
 
@@ -61,7 +72,7 @@ class Game:
         return (coordX1, coordY1, coordX2, coordY2)
 
     def playerSeq(self):
-        printMe (display.showBoard(self.board,player=self.player) )
+        printMe (display.showBoard(self.board, player=self.player) )
         (x1,y1,x2,y2) = self.playerTurn()
         self.gameHistory.append( (copy.deepcopy(self.board),self.player,x1,y1,x2,y2) )
         return pieces.notPlayer(self.player)
@@ -72,8 +83,8 @@ class Game:
 
     def readInput(self, fails):
         # Ask bot for input
-        if self.aiPlayer == self.player:
-            return self.ai.doTurn(copy.deepcopy(self.board), fails)
+        if self.player in self.ai:
+            return self.ai[self.player].doTurn(copy.deepcopy(self.board), fails)
         # Ask player for input
         else:
             interpretedCommand = False

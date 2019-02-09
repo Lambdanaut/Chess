@@ -2,7 +2,7 @@ import portability
 from mechanics import isIn
 
 # White's ingame name
-w    = "White"
+w = "White"
 # White's Pieces
 pa = "pa"
 ro = "ro"
@@ -12,7 +12,7 @@ ki = "ki"
 qu = "qu"
 
 # Black's ingame name
-b    = "Black"
+b = "Black"
 # Black's Pieces
 PA = "PA"
 RO = "RO"

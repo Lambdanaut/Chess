@@ -11,13 +11,14 @@ import game
 import getopt, sys
 
 def main():
-    aiOpponent = False
+    aiOpponents = 0
 
     args = sys.argv[1:]
-    optlist, args = getopt.getopt(args, 'b')
+    optlist, args = getopt.getopt(args, 'bm')
     for (opt, arg) in optlist:
-        if opt == '-b': aiOpponent = True
+        if opt == '-b': aiOpponents = 1
+        if opt == '-m': aiOpponents = 2
 
-    game.Game(aiOpponent)
+    game.Game(aiOpponents)
 
 if __name__ == "__main__": main()
