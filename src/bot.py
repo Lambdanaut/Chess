@@ -66,7 +66,7 @@ class DepthBot(Bot):
     Minimax bot
     """
 
-    def doTurn(self, board, fails=0):
+    def doTurn(self, board, fails=-1):
         movedBoardScores = []  # A list of (score, (piece, pieceX, pieceY, moveX, moveY))
 
         myPieces = allPieces(board, player = self.player)
@@ -78,7 +78,12 @@ class DepthBot(Bot):
                 movedBoardScores.append((score,(piece, pieceX, pieceY, moveX, moveY)))
 
         movedBoardScores.sort(reverse=True)
-        index = fails or min(len(movedBoardScores) - 1, max(1, round(random.expovariate(0.5))))
+
+        if fails >= 0:
+            index = fails
+        else:
+            index = min(len(movedBoardScores) - 1, max(1, round(random.expovariate(0.5))))
+
         _, winningMove = movedBoardScores[index]
         return winningMove
 
@@ -101,5 +106,8 @@ class DepthBot(Bot):
                 result += score
                 results.append(result)
 
-        return sum(results)
+        # Case where list is empty
+        results.append(0)
+
+        return max(results)
 
