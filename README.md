@@ -3,11 +3,13 @@ _Chess_ - A Platform for Testing Chess AI
 
 The game of Chess, written in Python. Python3 has experimental unicode functionality. 
 
+Use the command `-b` to play vs a minimax bot.
+
 Quick Start
 -----------
 1. `git clone git@github.com:Lambdanaut/Chess.git`
 2. `cd Chess`
-3. `python src/main.py`
+3. `python src/main.py -b`
 -- The Game Starts --
 4. `a2 a4`
 5. `b7 b5`
