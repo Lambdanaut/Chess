@@ -8,17 +8,33 @@
 # For python2, requires a version >= 2.6
 
 import game
-import getopt, sys
+
+import getopt
+import sys
+
 
 def main():
     aiOpponents = 0
 
     args = sys.argv[1:]
-    optlist, args = getopt.getopt(args, 'bm')
+    optlist, args = getopt.getopt(args, 'bmh')
     for (opt, arg) in optlist:
-        if opt == '-b': aiOpponents = 1
-        if opt == '-m': aiOpponents = 2
+
+        if opt == '-h':
+            print("""
+            By default, running this program will start a 1v1 chess match between two human players.
+            
+            -b : Starts a chess game vs a minimax AI named Depthbot. 
+            -m : Starts a chess game between two minimai AIs. 
+            """)
+            return
+        elif opt == '-b':
+            aiOpponents = 1
+        elif opt == '-m':
+            aiOpponents = 2
 
     game.Game(aiOpponents)
 
-if __name__ == "__main__": main()
+
+if __name__ == "__main__":
+    main()

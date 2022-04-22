@@ -6,7 +6,7 @@ from mechanics import *
 
 
 class Bot(object):
-    def __init__ (self, player):
+    def __init__(self, player):
         self.player = player
 
     def doTurn(self, board, fails=0):
@@ -18,8 +18,10 @@ class Bot(object):
         if pieces.isBishop(piece): return 3
         if pieces.isRook(piece):   return 5
         if pieces.isQueen(piece):  return 9
-        if pieces.isKing(piece):   return 5
-        else:                      return 0
+        if pieces.isKing(piece):
+            return 5
+        else:
+            return 0
 
     def scoreHeuristic(self, board):
         playerPieces = [piece for piece, x, y in allPieces(board, player=self.player)]
@@ -32,6 +34,7 @@ class Bot(object):
 
 class RandoBot(Bot):
     """ A bot that makes completely random moves """
+
     def doTurn(self, board, fails=0):
         myPieces = allPieces(board, player=self.player)
         while True:
@@ -46,15 +49,16 @@ class OneDepthBot(Bot):
     """ 
     A bot that makes moves with the highest scoreHeuristic, based on a depth search of 1
     """
+
     def doTurn(self, board, fails=0):
         movedBoardScores = []  # A list of (score, (piece, pieceX, pieceY, moveX, moveY))
-        myPieces = allPieces(board, player = self.player)
+        myPieces = allPieces(board, player=self.player)
         for piece, pieceX, pieceY in myPieces:
             possiblePiecesMoves = rules.possibleMoves(board, pieceX, pieceY)
             for moveX, moveY in possiblePiecesMoves:
                 movedBoard = movePiece(board, piece, pieceX, pieceY, moveX, moveY)
                 movedBoardScore = self.scoreHeuristic(movedBoard)
-                movedBoardScores.append( (movedBoardScore, (piece, pieceX, pieceY, moveX, moveY)) )
+                movedBoardScores.append((movedBoardScore, (piece, pieceX, pieceY, moveX, moveY)))
         movedBoardScores.sort()
         fails_offset = -1 + fails
         _, winningMove = movedBoardScores[fails_offset]
@@ -69,13 +73,13 @@ class DepthBot(Bot):
     def doTurn(self, board, fails=-1):
         movedBoardScores = []  # A list of (score, (piece, pieceX, pieceY, moveX, moveY))
 
-        myPieces = allPieces(board, player = self.player)
+        myPieces = allPieces(board, player=self.player)
         for piece, pieceX, pieceY in myPieces:
             possiblePiecesMoves = rules.possibleMoves(board, pieceX, pieceY)
             for moveX, moveY in possiblePiecesMoves:
                 movedBoard = movePiece(board, piece, pieceX, pieceY, moveX, moveY)
                 score = self.miniMax(movedBoard, self.player)
-                movedBoardScores.append((score,(piece, pieceX, pieceY, moveX, moveY)))
+                movedBoardScores.append((score, (piece, pieceX, pieceY, moveX, moveY)))
 
         movedBoardScores.sort(reverse=True)
 
@@ -88,7 +92,7 @@ class DepthBot(Bot):
         return winningMove
 
     def miniMax(self, board, currentPlayer, depth=2):
-        if depth == 0: 
+        if depth == 0:
             return 0
 
         myPieces = allPieces(board, player=currentPlayer)
@@ -110,4 +114,3 @@ class DepthBot(Bot):
         results.append(0)
 
         return max(results)
-
